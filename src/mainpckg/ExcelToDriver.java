@@ -46,15 +46,20 @@ public class ExcelToDriver {
                 continue;
             }
             
+            //ID, First, Last, Gender, Address, Address 2, Hair Color, Eye Color, DOB, Exp Date, Weight, Height, Points, Vision, Donor, DL Number
+            
             Driver d = new Driver((int) row.getCell(0).getNumericCellValue(), 
-            row.getCell(1).getStringCellValue(), row.getCell(2).getStringCellValue(),
-            row.getCell(3).getStringCellValue(), row.getCell(4).getStringCellValue(),
-            row.getCell(5).getStringCellValue(), row.getCell(6).getStringCellValue(),
-            (int) row.getCell(7).getNumericCellValue(), row.getCell(8).getStringCellValue(),
+            row.getCell(1).getStringCellValue(), 
+            row.getCell(2).getStringCellValue(),
+            row.getCell(3).getStringCellValue(), 
+            row.getCell(4).getStringCellValue(),
+            row.getCell(5).getStringCellValue(), 
+            row.getCell(6).getStringCellValue(),
+            row.getCell(7).getStringCellValue(), row.getCell(8).getDateCellValue(),
             row.getCell(9).getDateCellValue(),
-            row.getCell(10).getDateCellValue(), (int) row.getCell(11).getNumericCellValue(),
-            row.getCell(12).getBooleanCellValue(), (int) row.getCell(13).getNumericCellValue(),
-            row.getCell(14).getBooleanCellValue(), (int) row.getCell(15).getNumericCellValue());
+            (int) row.getCell(10).getNumericCellValue(), (int) row.getCell(11).getNumericCellValue(),
+            (int) row.getCell(12).getNumericCellValue(), (int) row.getCell(13).getNumericCellValue(),
+            (int) row.getCell(14).getNumericCellValue(), (int) row.getCell(15).getNumericCellValue());
             
             Driver.drivers.add(d);
         }

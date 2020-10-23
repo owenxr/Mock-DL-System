@@ -1,6 +1,8 @@
 package mainpckg;
 
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -18,34 +20,44 @@ import java.util.LinkedList;
  */
 public class Driver {
     
+    //ID, First, Last, Gender, Address, Address 2, Hair Color, Eye Color, DOB, Exp Date, Weight, Height, Points, Vision, Donor, DL Number
+    
     public static LinkedList<Driver> drivers = new LinkedList<Driver>();
     
-    private int id, vision, dlNumber, postalCode, age;
-    private String firstName, lastName, gender, address, city, state, eyeColor;
+    private int id, vision, dlNumber, postalCode, age, weight, points;
+    private String firstName, lastName, gender, address, city, state, eyeColor, hairColor, height;
     private Date dob, expDate;
-    private boolean underAge, visionPassed;
+    private boolean underAge, visionPassed, donor, canDrive;
     
     public Driver(int id, String firstName, String lastName, String gender,
-            String address, String city, String state, int postalCode, String eyeColor,
-            Date dob, Date expDate, int age, boolean underAge, int vision, 
-            boolean visionPassed, int dlNumber)
+            String address, String address2, String hairColor, String eyeColor,
+            Date dob, Date expDate, int weight, int height, int points, int vision, 
+            int donor, int dlNumber)
     {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
         this.address = address;
-        this.city = city;
-        this.state = state;
-        this.postalCode = postalCode;
+        System.out.println(address2);
+        this.city = address2.substring(0, address2.indexOf(","));
+        this.state = address2.substring(address2.indexOf(',') + 2, address2.indexOf(',') + 4);
+        this.postalCode = Integer.parseInt(address2.substring(address2.indexOf(',') + 5, address2.length()));
         this.eyeColor = eyeColor;
+        this.hairColor = hairColor;
         this.dob = dob;
         this.expDate = expDate;
-        this.age = age;
-        this.underAge = underAge;
+        this.age = getAgeNum();
+        this.underAge = age > 16;
         this.vision = vision;
-        this.visionPassed = visionPassed;
+        this.visionPassed = vision >= 15;
         this.dlNumber = dlNumber;
+        this.height = Math.floor(height/12) + "'" + height % 12 + "\"";
+        this.hairColor = hairColor;
+        this.weight = weight;
+        this.donor = donor == 1;
+        this.points = points;
+        this.canDrive = points <= 5 || !underAge;
     }
     
     public int getID()
@@ -96,6 +108,10 @@ public class Driver {
     {
         return eyeColor;
     }
+    public String getHairColor()
+    {
+        return hairColor;
+    }
     public Date getDOBDate()
     {
         return dob;
@@ -112,6 +128,34 @@ public class Driver {
     {
         return visionPassed;
     }
+    public String getHeight()
+    {
+        return height;
+    }
+    public int getWeight()
+    {
+        return weight;
+    }
+    public boolean getDonor()
+    {
+        return donor;
+    }
+    public boolean canDrive()
+    {
+        return canDrive;
+    }
+    public int getPoints()
+    {
+        return points;
+    }
+    public void setDonor(boolean donor)
+    {
+        this.donor = donor;
+    }
+    public void setHeight(int height)
+    {
+        this.height = ((int) Math.floor(height/12)) + "'" + height % 12 + "\"";
+    }
     
     public void setID(int id)
     {
@@ -120,10 +164,7 @@ public class Driver {
     public void setVision(int vision)
     {
         this.vision = vision;
-        if(vision >= 20)
-            visionPassed = true;
-        else
-            visionPassed = false;
+        visionPassed = vision >= 15;
     }
     public void setDLNum(int dlNum)
     {
@@ -136,10 +177,8 @@ public class Driver {
     public void setAge(int age)
     {
         this.age = age;
-        if(age >= 21)
-            underAge = false;
-        else
-            underAge = true;
+        underAge = age < 16;
+        canDrive = points <= 5 || !underAge;
     }
     public void setFirstName(String firstName)
     {
@@ -169,6 +208,10 @@ public class Driver {
     {
         this.eyeColor = eyeColor;
     }
+    public void setHairColor(String hairColor)
+    {
+        this.hairColor = hairColor;
+    }
     public void setDOBDate(String DOBDate)
     {
         LinkedList<String> list = (LinkedList<String>) Arrays.asList(DOBDate.split("/"));
@@ -190,6 +233,29 @@ public class Driver {
             Date d = new Date();
             d.setTime(cal.getTimeInMillis());
             expDate = d;
+    }
+    public void setWeight(int weight)
+    {
+        this.weight = weight;
+    }
+    public void setPoints(int points)
+    {
+        this.points = points;
+        canDrive = points <= 5;
+    }
+    
+    private int getAgeNum()
+    {
+        Calendar c = Calendar.getInstance();
+        c.setTime(dob);
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH) + 1;
+        int date = c.get(Calendar.DATE);
+        LocalDate dobDate = LocalDate.of(year, month, date);
+        LocalDate now = LocalDate.now();
+        Period dif = Period.between(dobDate, now);
+        
+        return age;
     }
     
     public Calendar toCal(Date d)
@@ -223,6 +289,60 @@ public class Driver {
         r += "\n";
         
         return r;
+    }
+    
+    public Object getValue(int val)
+    {
+        switch(val)
+        {
+            case 0:
+                return id;
+            case 1:
+                return firstName;
+            case 2:
+                return lastName;
+            case 3:
+                return gender;
+            case 4:
+                return address;
+            case 5:
+                return city;
+            case 6:
+                return state;
+            case 7:
+                return postalCode;
+            case 8:
+                return eyeColor;
+            case 9:
+                String r = toCal(dob).get(Calendar.MONTH) + "/" 
+                        + toCal(dob).get(Calendar.DATE) + "/" 
+                        + toCal(dob).get(Calendar.YEAR);
+                return r;
+            case 10:
+                r = toCal(expDate).get(Calendar.MONTH) + "/" 
+                        + toCal(expDate).get(Calendar.DATE) + "/" 
+                        + toCal(expDate).get(Calendar.YEAR);
+                return r;
+            case 11:
+                return age;
+            case 12:
+                return underAge;
+            case 13:
+                return vision;
+            case 14:
+                return visionPassed;
+            case 15:
+                return dlNumber;
+            case 16:
+                return hairColor;
+            case 17:
+                return height;
+            case 18:
+                return weight;
+            case 19:
+                return donor;
+        }
+        return null;
     }
     
 }

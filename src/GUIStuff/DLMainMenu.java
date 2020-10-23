@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import javax.swing.JFileChooser;
 import mainpckg.Driver;
 import mainpckg.Save;
+import mainpckg.Sort;
 
 /**
  *
@@ -19,7 +20,7 @@ import mainpckg.Save;
 public class DLMainMenu extends javax.swing.JFrame {
 
     private Driver currentDriver;
-    private LinkedList<javax.swing.JTextField> fields = new LinkedList<javax.swing.JTextField>();
+    private LinkedList<Driver> iterateList = Driver.drivers;
     
     /**
      * Creates new form DLMainMenu
@@ -82,6 +83,9 @@ public class DLMainMenu extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         saveButton = new javax.swing.JButton();
+        searchField = new javax.swing.JTextField();
+        searchTextLabel = new javax.swing.JLabel();
+        searchSelectBox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Main Menu");
@@ -163,7 +167,12 @@ public class DLMainMenu extends javax.swing.JFrame {
 
         organDonorBox.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
         organDonorBox.setForeground(new java.awt.Color(255, 204, 204));
-        organDonorBox.setText("TODO");
+        organDonorBox.setText("Donor");
+        organDonorBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                organDonorBoxActionPerformed(evt);
+            }
+        });
 
         expDateField.setBackground(null);
         expDateField.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
@@ -224,12 +233,12 @@ public class DLMainMenu extends javax.swing.JFrame {
 
         heightField.setBackground(null);
         heightField.setFont(new java.awt.Font("Lucida Grande", 0, 11)); // NOI18N
-        heightField.setText("TODO");
+        heightField.setText(currentDriver.getHeight());
         heightField.setBorder(null);
 
         weightField.setBackground(null);
         weightField.setFont(new java.awt.Font("Lucida Grande", 0, 11)); // NOI18N
-        weightField.setText("TODO");
+        weightField.setText(currentDriver.getWeight() + "");
         weightField.setBorder(null);
 
         eyesField.setBackground(null);
@@ -282,6 +291,8 @@ public class DLMainMenu extends javax.swing.JFrame {
             }
         });
 
+        organDonorBox.setSelected(currentDriver.getDonor());
+
         javax.swing.GroupLayout driversLicenseLayout = new javax.swing.GroupLayout(driversLicense);
         driversLicense.setLayout(driversLicenseLayout);
         driversLicenseLayout.setHorizontalGroup(
@@ -305,16 +316,6 @@ public class DLMainMenu extends javax.swing.JFrame {
                     .addGroup(driversLicenseLayout.createSequentialGroup()
                         .addGap(62, 62, 62)
                         .addComponent(organDonorBox))
-                    .addGroup(driversLicenseLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(addressField, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(driversLicenseLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(cityField, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 19, Short.MAX_VALUE)
-                        .addComponent(stateAddressField, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 24, Short.MAX_VALUE)
-                        .addComponent(postalCodeField, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, driversLicenseLayout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(driversLicenseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -354,8 +355,18 @@ public class DLMainMenu extends javax.swing.JFrame {
                                 .addGroup(driversLicenseLayout.createSequentialGroup()
                                     .addComponent(sexLabel)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(sexField, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(sexField, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(driversLicenseLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(driversLicenseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(addressField, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, driversLicenseLayout.createSequentialGroup()
+                                .addComponent(cityField, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(stateAddressField, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(postalCodeField, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 0, 0))
         );
         driversLicenseLayout.setVerticalGroup(
             driversLicenseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -406,7 +417,7 @@ public class DLMainMenu extends javax.swing.JFrame {
                     .addComponent(HGTLabel)
                     .addComponent(WGTLabel)
                     .addComponent(heightField, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(weightField, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(weightField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -429,32 +440,54 @@ public class DLMainMenu extends javax.swing.JFrame {
             }
         });
 
+        searchField.setFont(new java.awt.Font("Lucida Grande", 0, 11)); // NOI18N
+        searchField.setBorder(null);
+        searchField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                searchFieldKeyTyped(evt);
+            }
+        });
+
+        searchTextLabel.setForeground(new java.awt.Color(255, 255, 255));
+        searchTextLabel.setText("Search Through");
+
+        searchSelectBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "First Name", "Last Name", "Gender", "Address", "City", "State", "Postal Code", "Hair Color", "Eye Color", "DL Number" }));
+
         javax.swing.GroupLayout displayPanelLayout = new javax.swing.GroupLayout(displayPanel);
         displayPanel.setLayout(displayPanelLayout);
         displayPanelLayout.setHorizontalGroup(
             displayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(displayPanelLayout.createSequentialGroup()
-                .addContainerGap(18, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(driversLicense, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(displayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(displayPanelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(displayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addGroup(displayPanelLayout.createSequentialGroup()
                                 .addComponent(driversLoadedLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(driversLenLabel)))
-                        .addContainerGap(12, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, displayPanelLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(displayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(displayPanelLayout.createSequentialGroup()
-                                .addComponent(jButton2)
-                                .addGap(52, 52, 52))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, displayPanelLayout.createSequentialGroup()
-                                .addComponent(saveButton)
-                                .addGap(74, 74, 74))))))
+                        .addComponent(saveButton)
+                        .addGap(74, 74, 74))
+                    .addGroup(displayPanelLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(searchTextLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(searchSelectBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(7, Short.MAX_VALUE))
+                    .addGroup(displayPanelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2)
+                        .addGap(52, 52, 52))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, displayPanelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(43, 43, 43))))
         );
         displayPanelLayout.setVerticalGroup(
             displayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -468,7 +501,14 @@ public class DLMainMenu extends javax.swing.JFrame {
                         .addGap(5, 5, 5)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2))
+                        .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(displayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(searchTextLabel)
+                            .addComponent(searchSelectBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(driversLicense, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(5, 5, 5)
                 .addComponent(saveButton)
@@ -493,10 +533,10 @@ public class DLMainMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void actionClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actionClick
-            if(currentDriver.getID() == Driver.drivers.size())
-            currentDriver = Driver.drivers.get(0);
+            if(iterateList.indexOf(currentDriver) == iterateList.size()-1)
+            currentDriver = iterateList.get(0);
         else
-            currentDriver = Driver.drivers.get(currentDriver.getID());
+            currentDriver = iterateList.get(iterateList.indexOf(currentDriver) + 1);
 
         stateField.setText(currentDriver.getState());
         dlField.setText(currentDriver.getDLNum() + "");
@@ -509,8 +549,11 @@ public class DLMainMenu extends javax.swing.JFrame {
         stateAddressField.setText(currentDriver.getState());
         postalCodeField.setText(currentDriver.getPostalCode() + "");
         sexField.setText(currentDriver.getGender());
-        hairField.setText(currentDriver.getEyeColor());
+        hairField.setText(currentDriver.getHairColor());
         eyesField.setText(currentDriver.getEyeColor());
+        heightField.setText(currentDriver.getHeight());
+        weightField.setText(currentDriver.getWeight() + "");
+        organDonorBox.setSelected(currentDriver.getDonor());
         jLabel1.setText("Displaying Driver " + currentDriver.getID());
         
         driversLicense.revalidate();
@@ -580,6 +623,43 @@ public class DLMainMenu extends javax.swing.JFrame {
         currentDriver.setEyeColor(eyesField.getText().trim());
     }//GEN-LAST:event_eyesFieldActionPerformed
 
+    private void organDonorBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_organDonorBoxActionPerformed
+        currentDriver.setDonor(organDonorBox.isSelected());
+    }//GEN-LAST:event_organDonorBoxActionPerformed
+
+    private void searchFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchFieldKeyTyped
+        LinkedList<Driver> sorted = Sort.sortMethod(searchSelectBox.getSelectedIndex(), searchField.getText().trim());
+        
+        iterateList = sorted;
+        
+        if(sorted.size() > 0)
+        {
+            currentDriver = sorted.get(0);
+        
+            stateField.setText(currentDriver.getState());
+            dlField.setText(currentDriver.getDLNum() + "");
+            expDateField.setText(currentDriver.toCal(currentDriver.getEXPDate()).get(Calendar.MONTH) + "/" + currentDriver.toCal(currentDriver.getEXPDate()).get(Calendar.DAY_OF_MONTH) + "/" + currentDriver.toCal(currentDriver.getEXPDate()).get(Calendar.YEAR));
+            dobField.setText(currentDriver.toCal(currentDriver.getDOBDate()).get(Calendar.MONTH) + "/" + currentDriver.toCal(currentDriver.getDOBDate()).get(Calendar.DAY_OF_MONTH) + "/" + currentDriver.toCal(currentDriver.getDOBDate()).get(Calendar.YEAR));
+            lastNameBox.setText(currentDriver.getLastName());
+            firstNameBox.setText(currentDriver.getFirstName());
+            addressField.setText(currentDriver.getAddress());
+            cityField.setText(currentDriver.getCity());
+            stateAddressField.setText(currentDriver.getState());
+            postalCodeField.setText(currentDriver.getPostalCode() + "");
+            sexField.setText(currentDriver.getGender());
+            hairField.setText(currentDriver.getHairColor());
+            eyesField.setText(currentDriver.getEyeColor());
+            heightField.setText(currentDriver.getHeight());
+            weightField.setText(currentDriver.getWeight() + "");
+            organDonorBox.setSelected(currentDriver.getDonor());
+            jLabel1.setText("Displaying Driver " + currentDriver.getID());
+        }
+        driversLicense.revalidate();
+        driversLicense.repaint();
+        displayPanel.revalidate();
+        displayPanel.repaint();
+    }//GEN-LAST:event_searchFieldKeyTyped
+
     /**
      * @param args the command line arguments
      */
@@ -644,6 +724,9 @@ public class DLMainMenu extends javax.swing.JFrame {
     private javax.swing.JCheckBox organDonorBox;
     private javax.swing.JTextField postalCodeField;
     private javax.swing.JButton saveButton;
+    private javax.swing.JTextField searchField;
+    private javax.swing.JComboBox<String> searchSelectBox;
+    private javax.swing.JLabel searchTextLabel;
     private javax.swing.JTextField sexField;
     private javax.swing.JLabel sexLabel;
     private javax.swing.JTextField stateAddressField;

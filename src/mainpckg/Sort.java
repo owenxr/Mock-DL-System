@@ -6,9 +6,6 @@
 package mainpckg;
 
 import java.util.LinkedList;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -16,42 +13,48 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class Sort {
     
-    //Unfinished
-    public static LinkedList<Driver> sortMethod(int column)
+    
+    /*
+    ID
+First Name
+Last Name
+Gender
+Address
+City
+State
+Postal Code
+Hair Color
+Eye Color
+DL Number
+    */
+    
+    public static LinkedList<Driver> sortMethod(int searchIndex, String searchText)
     {
-        XSSFWorkbook save = ExcelToDriver.data;
-        XSSFSheet sheet = save.getSheetAt(0);
-        
-        LinkedList<String> stuff = new LinkedList<String>();
-        LinkedList<String> dateStuff = new LinkedList<String>();
         
         LinkedList<Driver> output = new LinkedList<Driver>();
         
-        if(column != 9 || column != 10)
-        {
-            
-        }
-        else
-        {
-            for(Row r : sheet)
-            {
-                String data = r.getCell(column).getStringCellValue();
-                String newS;
-                for(int i = data.length() - 1; i>=0; i++)
-                {
-                    if(data.charAt(i) == '/')
-                    {
-                        //newS = data.substring();
-                    }
-                }
-            }
-        } 
+        if(searchText.replace(" ", "").equals(""))
+            return Driver.drivers;
         
-            for(Row r : sheet)
-            {
-            
-            }
-            
+        int index = searchIndex;
+        
+        switch(index) {
+            case 8:
+                index = 16;
+                break;
+            case 9:
+                index = 8;
+                break;
+            case 10:
+                index = 19;
+        }
+        
+        for(int i = 0; i < Driver.drivers.size(); i++)
+        {
+            if(Driver.drivers.get(i).getValue(index).toString().contains(searchText))
+                output.add(Driver.drivers.get(i));
+        }
+        
         return output;
     }
     

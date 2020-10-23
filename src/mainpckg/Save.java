@@ -34,7 +34,13 @@ public class Save {
             for(int k = 0; k<19; k++)
             {
                 sheet.getRow(i).createCell(k);
-                sheet.getRow(i).getCell(k).setCellValue(headers(k));
+                if(i == 0) 
+                    sheet.getRow(i).getCell(k).setCellValue(headers(k));
+                else
+                {
+                    Driver d = Driver.drivers.get(i-1);
+                    sheet.getRow(i).getCell(k).setCellValue(d.getValue(k).toString());
+                }
             }
         }
         
